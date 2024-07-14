@@ -1,0 +1,31 @@
+.navbar-container {
+    width: 100%;
+  }
+
+  .p-menubar {
+    border-radius: 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  /* .p-menubar .p-menubar-root-list {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+
+  } */
+
+  .p-menubar .p-menubar-root-list > .p-menuitem {
+    flex: 1 1 auto; /* Allow items to grow and shrink */
+    text-align: center; /* Center the text */
+  }
+
+  .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link {
+    justify-content: center; /* Center the link content */
+    padding: 0.5rem 1rem; /* Adjust padding as needed */
+  }
+
+  .card {
+    margin: 0;
+    border: none;
+  }

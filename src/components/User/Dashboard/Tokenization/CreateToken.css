@@ -1,0 +1,30 @@
+.custom-file-upload .p-button {
+    display: none; /* Hide the default button */
+}
+
+.custom-file-upload .p-fileupload-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border: 2px dashed #c0c0c0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.custom-file-upload .p-fileupload-content:hover {
+    border-color: #007ad9; /* Change color on hover */
+}
+
+.custom-file-upload .p-fileupload-content .upload-icon {
+    font-size: 3rem;
+    color: #007ad9;
+}
+
+.custom-file-upload .p-fileupload-content .upload-message {
+    margin-top: 10px;
+    font-size: 1rem;
+    color: #555;
+}

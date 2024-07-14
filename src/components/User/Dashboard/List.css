@@ -1,0 +1,26 @@
+.custom-card {
+  width: 70%;
+
+}
+.small-header .p-card-title {
+    font-size: 1em;
+    font-size: medium;
+  }
+
+.grid {
+    width: 100%;
+    margin: 0;
+}
+
+.card {
+    margin: 1rem 0;
+}
+
+/* Prevent horizontal scrolling */
+body {
+    overflow-x: hidden;
+}
+
+.data-table-responsive .p-datatable {
+    width: 100%;
+}
