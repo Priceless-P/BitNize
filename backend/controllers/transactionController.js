@@ -26,6 +26,7 @@ class TransactionController {
 
         const savedTransaction = await transaction.save();
         const asset_ = await Asset.findById(asset);
+        //console.log(amount)
         asset_.totalAvailableForPurchase -= amount;
         await asset_.save();
         return res.status(201).send({
@@ -36,7 +37,13 @@ class TransactionController {
     });
     getForUserTransactions = asyncHandler(async (req, res) => {
         try {
-            const transactions = await Transaction.find({ buyer: req.params.userId }).populate('asset').populate('buyer');
+            const transactions = await Transaction.find({ buyer: req.params.userId }).populate({
+                path: 'asset',
+                populate: {
+                    path: 'owner',
+                    model: 'User'
+                }
+            }).populate('buyer');
             return res.status(200).send({
                 success: true,
                 message: "User Transactions retrieved successfully",
@@ -53,7 +60,13 @@ class TransactionController {
 
     getForSaleTransactions = asyncHandler(async (req, res) => {
         try {
-            const transactions = await Transaction.find({ isForSale: true }).populate('asset').populate('buyer');
+            const transactions = await Transaction.find({ isForSale: true }).populate({
+                path: 'asset',
+                populate: {
+                    path: 'owner',
+                    model: 'User'
+                }
+            }).populate('buyer');
             return res.status(200).send({
                 success: true,
                 message: "For sale transactions retrieved successfully",
@@ -71,7 +84,13 @@ class TransactionController {
     getTokenTransactions = asyncHandler(async (req, res) => {
         try {
             const {id} = req.params;
-            const transactions = await Transaction.findById(id).populate('asset').populate('buyer');
+            const transactions = await Transaction.findById(id).populate({
+                path: 'asset',
+                populate: {
+                    path: 'owner',
+                    model: 'User'
+                }
+            }).populate('buyer');
             return res.status(200).send({
                 success: true,
                 message: "Transactions retrieved successfully",

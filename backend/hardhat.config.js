@@ -35,7 +35,9 @@ const rskTestNetGasMultiplier = 1.1;
 require("@nomiclabs/hardhat-waffle");
 // require("@nomicfoundation/hardhat-toolbox");
 require("@nomiclabs/hardhat-etherscan");
+// require("@nomiclabs/hardhat-ethers");
 require("hardhat-tracer");
+// require("hardhat-console");
 
 module.exports = {
   solidity: "0.8.20",

@@ -175,7 +175,6 @@ function requestTransfer(address from, address to, uint256 amount) external {
             if (
                 shareTransfers[i].to == to &&
                 shareTransfers[i].amount == amount
-                // shareTransfers[i].approved
             ) {
                 return i;
             }
@@ -195,12 +194,10 @@ function requestTransfer(address from, address to, uint256 amount) external {
         ShareTransfer storage transfer_ = shareTransfers[transferId];
         require(transfer_.to == msg.sender, "Only the buyer can complete the transfer");
         require(bytes(transfer_.documentsURI).length > 0, "Documents not present");
-
-        uint256 payableAmount = transfer_.amount * tokenPrice;
-        require(msg.value >= payableAmount, "Insufficient rBTC sent");
-
+        uint256 amount = transfer_.amount / (10**18);
+        uint256 payableAmount = amount * tokenPrice;
         // Transfer tokens from seller to buyer
-        _transfer(transfer_.from, transfer_.to, transfer_.amount * 10**decimals());
+        _transfer(transfer_.from, transfer_.to, transfer_.amount);
 
         // Transfer Ether from buyer to seller
         payable(transfer_.from).transfer(payableAmount);
@@ -213,26 +210,6 @@ function requestTransfer(address from, address to, uint256 amount) external {
         // Remove transfer request from mapping
         delete shareTransfers[transferId];
     }
-
-    function verifyAndTransferTokens(uint256 transferId) public {
-    ShareTransfer storage transfer_ = shareTransfers[transferId];
-    require(transfer_.to == msg.sender, "Only the buyer can complete the transfer");
-    require(bytes(transfer_.documentsURI).length > 0, "Documents not present");
-    _transfer(transfer_.from, transfer_.to, transfer_.amount * 10**decimals());
-}
-
-function transferAndRefund(uint256 transferId) public payable{
-    ShareTransfer storage transfer_ = shareTransfers[transferId];
-    uint256 payableAmount = transfer_.amount * tokenPrice;
-require(msg.value >= payableAmount, "Insufficient rBTC sent");
-    payable(transfer_.from).transfer(payableAmount);
-
-    if (msg.value > payableAmount) {
-        payable(msg.sender).transfer(msg.value - payableAmount);
-    }
-
-    delete shareTransfers[transferId];
-}
 
     function transfer(address recipient, uint256 amount) public override returns (bool) {
         uint256 transferId = getTransferId(recipient, amount);

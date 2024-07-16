@@ -2,9 +2,9 @@ const { ethers } = require("hardhat");
 const { BigNumber } = ethers;
 
 const factoryAbi = require("../artifacts/contracts/BusinessSharesTokenFactory.sol/BusinessSharesTokenFactory.json").abi;
-const factoryAddress = "0x53874c20E995bcbbC05cB6bAC61CaAe4A30C4fcD";
+const factoryAddress = "0x1C145D63c8B440F4114BaF7f5a2BDc1423941572";
 const tokenAbi = require("../artifacts/contracts/BusinessSharesToken.sol/BusinessSharesToken.json").abi;
-const contractAddress = "0x44C370CDc80AB7007ABeDFc7Fc4bfCe8797F24B4";
+const contractAddress = "0xa30DD95a1C9E8Ce34E96eE13691350F839304CE9";
 
 async function main() {
   try {
@@ -15,11 +15,11 @@ async function main() {
 
     const factory = new ethers.Contract(factoryAddress, factoryAbi, deployer);
 
-    const tokenName = "IJB";
-    const tokenSymbol = "JB";
+    const tokenName = "Test2";
+    const tokenSymbol = "TSeT";
     const documentsURI = "path/to/documents";
     const initialSupplyPercentage = 10;
-    const tokenPrice = ethers.utils.parseEther("0.0006");
+    const tokenPrice = ethers.utils.parseEther("0.000006");
 
     const transaction = await factory.createBusinessSharesToken(
       tokenName, tokenSymbol, documentsURI, initialSupplyPercentage, tokenPrice
@@ -31,7 +31,7 @@ async function main() {
     console.log("BusinessSharesToken created at address:", tokenAddress);
 
     // Example of minting tokens on the newly created token contract
-    // await mintTokens(tokenAddress);
+    await mintTokens(tokenAddress);
 
   } catch (error) {
     console.error("Error in main function:", error);
@@ -67,7 +67,7 @@ async function buyTokens(amount) {
     const tokenPrice = await contract.tokenPrice();
 
     const requiredValue = BigNumber.from(amount).mul(tokenPrice);
-
+    console.log(requiredValue)
     const gasLimit = await contract.estimateGas.buyTokens(amount, deployer.address);
     const gasPrice = await ethers.provider.getGasPrice();
 
@@ -91,9 +91,9 @@ async function buyTokens(amount) {
 
 // Example usage
 (async () => {
-    // await main();
-    console.log("Minting.....")
-   await mintTokens(contractAddress);
+    //  await main();
+//     console.log("Minting.....")
+//    await mintTokens(contractAddress);
    console.log("Buying......")
-  await buyTokens(5);
+  await buyTokens(30);
 })();

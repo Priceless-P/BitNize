@@ -11,6 +11,7 @@ async function main() {
   console.log("Connected network:", network.name);
 
   const BusinessSharesTokenFactory = await ethers.getContractFactory("BusinessSharesTokenFactory");
+  console.log(BusinessSharesTokenFactory)
   const factory = await BusinessSharesTokenFactory.deploy();
 
   console.log("BusinessSharesTokenFactory deployed to:", factory.address);

@@ -1,10 +1,10 @@
 const { ethers } = require("hardhat");
 const { BigNumber } = ethers;
 
-const factoryAbi = require("../artifacts/contracts/BusinessSharesTokenFactory.sol/BusinessSharesTokenFactory.json").abi;
-const factoryAddress = "0x3D6969afA09d329A8e2E36A4676418f2d68cb3B3";
+// const factoryAbi = require("../artifacts/contracts/BusinessSharesTokenFactory.sol/BusinessSharesTokenFactory.json").abi;
+// const factoryAddress = "0x3D6969afA09d329A8e2E36A4676418f2d68cb3B3";
 const tokenAbi = require("../artifacts/contracts/BusinessSharesToken.sol/BusinessSharesToken.json").abi;
-const contractAddress = "0x44C370CDc80AB7007ABeDFc7Fc4bfCe8797F24B4";
+const contractAddress = "0xa30DD95a1C9E8Ce34E96eE13691350F839304CE9";
 
 async function main() {
   try {
@@ -13,8 +13,8 @@ async function main() {
     console.log("Account balance:", (await deployer.getBalance()).toString());
 
     // Example usage of the functions
-    //await requestTransfer(deployer.address, "0x31cc96d9346354225fb080dEaa964231Ca6c62Ab", 2);
-    const transferId = await getTransferId("0x31cc96d9346354225fb080dEaa964231Ca6c62Ab", 2);
+    //await requestTransfer(deployer.address, deployer.address, 2000000000000000000n);
+    const transferId = await getTransferId(deployer.address, 2000000000000000000n);
     console.log("Transfer ID:", transferId.toString());
 
     //await approveTransfer(transferId, "path/to/documents");
@@ -44,10 +44,11 @@ async function getTransferId(to, amount) {
     const contract = new ethers.Contract(contractAddress, tokenAbi, deployer);
 
     const transferId = await contract.getTransferId(to, amount);
-      const getTransferDetails = await contract.getTransferDetails(transferId.toString());
+      const getTransferDetails = await contract.getTransferDetails(transferId);
       const price = await contract.tokenPrice();
       console.log(getTransferDetails)
       console.log(price)
+      console.log("transfer count", await contract.transferCount())
     return transferId;
   } catch (error) {
     console.error("Error getting transfer ID:", error);
@@ -78,15 +79,19 @@ async function buyAndTransferTokens(transferId) {
       const transfer = await contract.shareTransfers(transferId);
       const tokenPrice = await contract.tokenPrice();
       const amount = BigNumber.from(transfer.amount);
+      console.log("Transfer Amount", amount)
+      const amount_ = BigNumber.from(amount);
+      const amount__ = amount_.div(BigNumber.from("10").pow(18));
+      const payableAmount = amount__ * (BigNumber.from(tokenPrice)) * BigNumber.from(2);
 
-      const payableAmount = amount * (BigNumber.from(tokenPrice));
+      console.log(payableAmount)
 
       const gasLimit = await contract.estimateGas.buyAndTransferTokens(transferId);
       const gasPrice = await ethers.provider.getGasPrice();
 
       const transaction = await contract.buyAndTransferTokens(transferId, {
         value: payableAmount,
-        gasLimit: gasLimit,
+        gasLimit: gasLimit * BigNumber.from(10),
       gasPrice: gasPrice
       });
 
@@ -105,7 +110,6 @@ async function buyAndTransferTokens(transferId) {
 
       const transfer = await contract.shareTransfers(transferId);
       const tokenPrice = await contract.tokenPrice();
-      const decimals = await contract.decimals(); // Get token decimals
       const amount = ethers.BigNumber.from(transfer.amount);
 
       const gasPrice = await ethers.provider.getGasPrice();

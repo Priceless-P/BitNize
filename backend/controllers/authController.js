@@ -1,6 +1,9 @@
 const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
-const {validateRequest} = require("../utils/utils");
+const {validateRequest, saveFile} = require("../utils/utils");
+const redisClient = require("../utils/redisClient")
+
+
 const {
   hashPassword,
   verifyPassword,
@@ -61,10 +64,11 @@ class AuthController {
         if (validationError) {
           return response.status(400).send(validationError);
         }
+        const legalDocumentsURIPath = await saveFile(legalDocumentsURI);
         user.businessName = businessName;
         user.location = location;
         user.yearStarted = yearStarted;
-        user.legalDocumentsURI = legalDocumentsURI;
+        user.legalDocumentsURI = legalDocumentsURIPath;
         await user.save();
       }
 
