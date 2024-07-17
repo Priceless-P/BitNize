@@ -13,11 +13,11 @@ async function main() {
     console.log("Account balance:", (await deployer.getBalance()).toString());
 
     // Example usage of the functions
-    //await requestTransfer(deployer.address, deployer.address, 2000000000000000000n);
-    const transferId = await getTransferId(deployer.address, 2000000000000000000n);
+    await requestTransfer(deployer.address, deployer.address, 11000000000000000n);
+    const transferId = await getTransferId(deployer.address, 11000000000000000n);
     console.log("Transfer ID:", transferId.toString());
 
-    //await approveTransfer(transferId, "path/to/documents");
+    await approveTransfer(transferId, "path/to/documents");
     await buyAndTransferTokens(transferId.toString());
   } catch (error) {
     console.error("Error in main function:", error);

@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 
-const API_BASE_URL = 'http://localhost:5000';
+const API_BASE_URL = 'https://bitnize.onrender.com';
 
 const setCookie = (name, value, hours) => {
     const date = new Date();

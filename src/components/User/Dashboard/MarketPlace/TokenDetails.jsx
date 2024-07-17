@@ -10,7 +10,10 @@ import { Dialog } from "primereact/dialog";
 import Layout from "../Layout/Layout";
 
 import { WalletContext } from "../WalletContext";
-import { fetchBuyTransaction, saveTransferRequest } from "../../../../functions/api";
+import {
+  fetchBuyTransaction,
+  saveTransferRequest,
+} from "../../../../functions/api";
 import { requestTransfer } from "../../../../functions/contracts";
 
 const TokenDetails = () => {
@@ -36,26 +39,33 @@ const TokenDetails = () => {
     };
 
     getTokenDetails();
-
   }, [tokenId]);
 
   const handleOpenDocument = () => {
-    window.open(`http://localhost:5000/${token.asset.tokenDocument}`, '_blank');
+    window.open(
+      `https://bitnize.onrender.com/${token.asset.tokenDocument}`,
+      "_blank"
+    );
   };
 
   const handleRequestTransfer = async () => {
     try {
-        setLoading(true);
+      setLoading(true);
       const { buyer, asset } = token;
       const from = buyer.wallets[0];
       const to = walletInfo.account;
       const userString = sessionStorage.getItem("user");
-          const userObject = JSON.parse(userString);
+      const userObject = JSON.parse(userString);
 
-      const tex = await requestTransfer(from, to, amount, asset.assetContractAddress);
+      const tex = await requestTransfer(
+        from,
+        to,
+        amount,
+        asset.assetContractAddress
+      );
       await saveTransferRequest({
         from: buyer._id,
-          to: userObject._id,
+        to: userObject._id,
         amount,
         assetId: asset._id,
       });
@@ -66,15 +76,15 @@ const TokenDetails = () => {
         detail: "Transfer request sent successfully",
       });
     } catch (error) {
-    console.log(error)
+      console.log(error);
       toast.current.show({
         severity: "error",
         summary: "Error",
         detail: "Error requesting transfer",
       });
     } finally {
-        setLoading(false);
-      }
+      setLoading(false);
+    }
   };
 
   if (!token) {
@@ -84,7 +94,7 @@ const TokenDetails = () => {
   return (
     <Layout>
       <div className="p-grid p-dir-col">
-      <Dialog
+        <Dialog
           header="Sending Request "
           visible={loading}
           modal={true}
@@ -103,7 +113,7 @@ const TokenDetails = () => {
         <Panel header={`Details`} className="p-mb-4">
           <Fieldset legend="Token Information" toggleable>
             <div className="p-grid">
-            <div className="p-col-12 p-md-6">
+              <div className="p-col-12 p-md-6">
                 <strong>Issued By:</strong> {token.asset.owner.businessName}
               </div>
               <div className="p-col-12 p-md-6">
@@ -120,14 +130,16 @@ const TokenDetails = () => {
               </div>
 
               <div className="p-col-12 p-md-6">
-                <strong>Contract Address:</strong> {token.asset.assetContractAddress}
+                <strong>Contract Address:</strong>{" "}
+                {token.asset.assetContractAddress}
               </div>
               <div className="p-col-12 p-md-6">
-                <strong>White Paper:</strong> <Button
-        icon="pi pi-external-link"
-        className="p-button-text"
-        onClick={handleOpenDocument}
-      />
+                <strong>White Paper:</strong>{" "}
+                <Button
+                  icon="pi pi-external-link"
+                  className="p-button-text"
+                  onClick={handleOpenDocument}
+                />
               </div>
               {/* <div className="p-col-12 p-md-6">
                 <strong>For Sale:</strong> {token.isForSale ? "Yes" : "No"}
@@ -135,12 +147,13 @@ const TokenDetails = () => {
             </div>
           </Fieldset>
         </Panel>
-    <Divider ></Divider>
+        <Divider></Divider>
         <Panel header="Current Owner Details" className="p-mb-4">
           <Fieldset legend="Current Owner Information" toggleable>
             <div className="p-grid">
               <div className="p-col-12 p-md-6">
-                <strong>Name:</strong> {token.buyer.firstName} {token.buyer.lastName}
+                <strong>Name:</strong> {token.buyer.firstName}{" "}
+                {token.buyer.lastName}
               </div>
               <div className="p-col-12 p-md-6">
                 <strong>Email:</strong> {token.buyer.email}

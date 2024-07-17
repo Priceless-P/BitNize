@@ -12,13 +12,16 @@ import { Toast } from "primereact/toast";
 import Layout from "../Layout/Layout";
 import { Dialog } from "primereact/dialog";
 import { WalletContext } from "../WalletContext";
-import { buyTokens as buyTokensFromContract, getTokenForSale } from "../../../../functions/contracts"; // Import the function
+import {
+  buyTokens as buyTokensFromContract,
+  getTokenForSale,
+} from "../../../../functions/contracts"; // Import the function
 import { useNavigate } from "react-router-dom";
 
 const Equity = () => {
   const { tokenId } = useParams();
   const [amount, setAmount] = useState(0);
-  const [amountForSale, setAmountForSale] = useState(null)
+  const [amountForSale, setAmountForSale] = useState(null);
   const [loading, setLoading] = useState(false);
   const [tokenDetails, setTokenDetails] = useState(null);
   const { walletInfo } = useContext(WalletContext);
@@ -37,7 +40,9 @@ const Equity = () => {
         // Fetch user information from session storage
         const userString = sessionStorage.getItem("user");
         const userObject = JSON.parse(userString);
-          setAmountForSale(await getTokenForSale(details.result.assetContractAddress));
+        setAmountForSale(
+          await getTokenForSale(details.result.assetContractAddress)
+        );
         if (details.result.owner.businessName !== userObject.businessName) {
           setTokenDetails(details);
         } else {
@@ -113,7 +118,8 @@ const Equity = () => {
       toast.current.show({
         severity: "success",
         summary: "Tokens purchased successfully",
-        detail: "Transaction Hash", hash,
+        detail: "Transaction Hash",
+        hash,
       });
       navigate("/dashboard");
     } catch (error) {
@@ -143,15 +149,18 @@ const Equity = () => {
       tokenDocument,
     } = tokenDetails.result;
     const handleOpenDocument = () => {
-      window.open(`http://localhost:5000/${tokenDocument}`, "_blank");
+      window.open(`https://bitnize.onrender.com/${tokenDocument}`, "_blank");
     };
     const handleOpenLegalDocument = () => {
-      window.open(`http://localhost:5000/${owner.legalDocumentsURI}`, "_blank");
+      window.open(
+        `https://bitnize.onrender.com/${owner.legalDocumentsURI}`,
+        "_blank"
+      );
     };
     return (
       <div className="p-grid">
-       <Toast ref={toast} />
-              <Dialog
+        <Toast ref={toast} />
+        <Dialog
           header="Buying Token"
           visible={loading}
           modal={true}
@@ -168,7 +177,7 @@ const Equity = () => {
         <div className="p-col-12 p-md-4">
           <Card>
             <img
-              src={`http://localhost:5000/${assetIcon}`}
+              src={`https://bitnize.onrender.com/${assetIcon}`}
               className="border-round"
               alt={tokenName}
               width={50}
@@ -192,7 +201,7 @@ const Equity = () => {
             </p>
             <p>
               <strong>Total Available:</strong>{" "}
-              {(amountForSale / 1000000000000000000)}
+              {amountForSale / 1000000000000000000}
             </p>
             <div className="p-col-12 p-md-6">
               <strong>Contract Address:</strong> {assetContractAddress}
@@ -251,7 +260,6 @@ const Equity = () => {
           />
         </div>
       </Card>
-
     </Layout>
   );
 };

@@ -71,7 +71,7 @@ export const approveTransfer = async (transferId, documentsURI, tokenAddress) =>
     });
 
     const tx = await transaction.wait();
-    //console.log(tx);
+    console.log(tx)
 };
 
 export const claimTokens = async (toAddress, amount, tokenAddress) => {
@@ -85,7 +85,7 @@ export const claimTokens = async (toAddress, amount, tokenAddress) => {
 
     const amount_ = BigNumber.from(transferAmount);
     const amount__ = amount_.div(BigNumber.from("10").pow(18));
-    const payableAmount = amount__ * (BigNumber.from(tokenPrice)) * BigNumber.from(2);
+    const payableAmount = (BigNumber.from(tokenPrice)) * BigNumber.from(amount);
 
     console.log(transfer)
 
@@ -94,7 +94,7 @@ export const claimTokens = async (toAddress, amount, tokenAddress) => {
 
     const transaction = await contract.buyAndTransferTokens(transferId, {
       value: payableAmount,
-      gasLimit: gasLimit * BigNumber.from(20),
+      gasLimit: gasLimit * BigNumber.from(30),
     gasPrice: gasPrice
     });
 

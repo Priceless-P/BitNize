@@ -154,7 +154,7 @@ const BuyTokens = () => {
         <div className="p-col-12 p-md-4">
           <Card>
             <img
-              src={`http://localhost:5000/${assetIcon}`}
+              src={`https://bitnize.onrender.com/${assetIcon}`}
               className="border-round"
               alt={tokenName}
               width={50}

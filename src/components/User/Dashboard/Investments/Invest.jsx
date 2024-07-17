@@ -47,7 +47,7 @@ const Invest = () => {
   const renderIcon = (rowData) => {
     return (
       <img
-        src={`http://localhost:5000/${rowData.assetIcon}`}
+        src={`https://bitnize.onrender.com/${rowData.assetIcon}`}
         className="border-round"
         alt={rowData.tokenName}
         style={{ width: "50px", height: "50px" }}
