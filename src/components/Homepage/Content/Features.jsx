@@ -21,28 +21,28 @@ const Features = () => {
                         <i className="pi pi-wallet text-4xl text-blue-500"></i>
                     </span>
                     <div className="text-900 text-xl mb-3 font-medium">For Investors</div>
-                    <span className="text-700 line-height-3">Invest in real-world assets with ease and security. Enjoy transparency and legal assurance with every transaction.</span>
+                    <span className="text-700 line-height-3">Invest in real-world businesses with ease and security. Enjoy transparency and assurance with every transaction.</span>
                 </div>
                 <div className="col-12 md:col-4 mb-4 px-5">
                     <span className="p-3 shadow-2 mb-3 inline-block" style={{ borderRadius: '10px' }}>
                         <i className="pi pi-users text-4xl text-blue-500"></i>
                     </span>
                     <div className="text-900 text-xl mb-3 font-medium">Community Driven</div>
-                    <span className="text-700 line-height-3">Join a growing community of like-minded individuals and businesses. Share, trade, and grow together.</span>
+                    <span className="text-700 line-height-3">Join a growing community of like-minded individuals and businesses. Share, earn, and grow together.</span>
                 </div>
                 <div className="col-12 md:col-4 mb-4 px-5">
                     <span className="p-3 shadow-2 mb-3 inline-block" style={{ borderRadius: '10px' }}>
                         <i className="pi pi-shield text-4xl text-blue-500"></i>
                     </span>
                     <div className="text-900 text-xl mb-3 font-medium">Secure Transactions</div>
-                    <span className="text-700 line-height-3">All transactions are secured by the robust RSK network, ensuring integrity and trust.</span>
+                    <span className="text-700 line-height-3">All transactions are secured by the RSK network, ensuring integrity and trust.</span>
                 </div>
                 <div className="col-12 md:col-4 mb-4 px-5">
                     <span className="p-3 shadow-2 mb-3 inline-block" style={{ borderRadius: '10px' }}>
                         <i className="pi pi-file text-4xl text-blue-500"></i>
                     </span>
-                    <div className="text-900 text-xl mb-3 font-medium">Legal Assurance</div>
-                    <span className="text-700 line-height-3">Legal documents are provided and verified before any sales, ensuring compliance and peace of mind.</span>
+                    <div className="text-900 text-xl mb-3 font-medium">Assurance</div>
+                    <span className="text-700 line-height-3">Documents are provided and for you to verify before any sales, ensuring transparency and peace of mind.</span>
                 </div>
                 <div className="col-12 md:col-4 mb-4 px-5">
                     <span className="p-3 shadow-2 mb-3 inline-block" style={{ borderRadius: '10px' }}>

@@ -3,12 +3,15 @@ import { Button } from 'primereact/button';
 import { Panel } from 'primereact/panel';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { fetchPendingSettle } from '../../../functions/api';
+import { Dialog } from 'primereact/dialog';
+import { fetchPendingSettle, createBuyTransaction } from '../../../functions/api';
 import { claimTokens } from '../../../functions/contracts';
 import Layout from './Layout/Layout';
+import { toast } from 'react-toastify';
 
 const PendingSettle = () => {
   const [pendingSettles, setPendingSettles] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchPendingSettles = async () => {
@@ -28,13 +31,31 @@ const PendingSettle = () => {
 
   const handleClaimTokens = async (settle) => {
     try {
-        //console.log(pendingSettles);
-    //console.log(settle)
-      await claimTokens(settle.to.wallets[0], settle.amount, settle.asset.assetContractAddress);
+        setLoading(true)
+        const userString = sessionStorage.getItem("user");
+      const userObject = JSON.parse(userString);
+      const userId = userObject._id;
 
+      const transactionData = {
+        asset: settle._id,
+        buyer: userId,
+        seller: settle.to,
+        amount: settle.amount,
+        price: settle.tokenPrice,
+        // transactionHash,
+        isForSale: false,
+      };
+      console.log("Transaction Data", transactionData)
+    console.log(settle.to.wallets[0], settle.amount)
+      const transactionHash = await claimTokens(settle.to.wallets[0], settle.amount, settle.asset.assetContractAddress);
+      const response = await createBuyTransaction(transactionData);
+
+    toast.success("Token claimed")
     } catch (error) {
       console.error("Error claiming tokens:", error);
-    }
+      toast.error("An error occurred", error.message)
+    } finally {
+        setLoading(false)}
   };
 
   const calculateCost = (amount, tokenPrice) => {
@@ -56,6 +77,20 @@ const PendingSettle = () => {
 
   return (
     <Layout>
+     <Dialog
+          header="Claiming Token"
+          visible={loading}
+          modal={true}
+          onHide={() => {}}
+          closable={false}
+        >
+          <div className="p-d-flex p-jc-center p-ai-center">
+            <i
+              className="pi pi-spin pi-spinner"
+              style={{ fontSize: "2rem" }}
+            ></i>
+          </div>
+        </Dialog>
       <Panel header="Pending Settlements">
         {pendingSettles.length > 0 ? (
           <DataTable value={pendingSettles}>

@@ -100,6 +100,7 @@ const CreateToken = () => {
 
       const updatedFormData = {
         ...formData,
+        transactionHash: tx.hash,
         tokenAddress: tokenAddress,
       };
 

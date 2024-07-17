@@ -24,3 +24,12 @@ body {
 .data-table-responsive .p-datatable {
     width: 100%;
 }
+.copyable-text {
+    cursor: pointer;
+    color: #007bff;
+    text-decoration: underline;
+}
+
+.copyable-text:hover {
+    color: #0056b3;
+}

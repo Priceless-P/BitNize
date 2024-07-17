@@ -17,7 +17,7 @@ const Content = () => {
 
                 </div>
                 <div className="text-700 text-2xl mb-5">
-                    Connect, trade, and grow with a community of forward-thinking investors and businesses.
+                    Connect, earn, and grow with a community of forward-thinking investors and businesses.
                 </div>
 
             </div>

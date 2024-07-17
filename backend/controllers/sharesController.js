@@ -64,7 +64,8 @@ class SharesController {
             assetContractAddress: tokenAddress,
             totalAvailableForPurchase: initialSupply,
             assetIcon: tokenIconPath,
-            assetDescription: tokenDescription
+            assetDescription: tokenDescription,
+            transactionHash
         });
 
         await asset.save();

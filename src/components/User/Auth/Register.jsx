@@ -103,6 +103,7 @@ const Register = () => {
                   <label className="block text-900 font-medium mb-2" htmlFor="legalDocumentsURI">Business Documents </label>
                   <FileUpload
                     mode="basic"
+                    
                     name="legalDocumentsURI"
                     accept="application/pdf"
                     className="document w-full mb-3"

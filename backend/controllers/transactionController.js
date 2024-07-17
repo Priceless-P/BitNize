@@ -27,7 +27,7 @@ class TransactionController {
         const savedTransaction = await transaction.save();
         const asset_ = await Asset.findById(asset);
         //console.log(amount)
-        asset_.totalAvailableForPurchase -= amount;
+        //asset_.totalAvailableForPurchase -= amount;
         await asset_.save();
         return res.status(201).send({
             success: true,

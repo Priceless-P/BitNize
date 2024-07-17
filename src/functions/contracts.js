@@ -66,7 +66,7 @@ export const approveTransfer = async (transferId, documentsURI, tokenAddress) =>
     const gasPrice = await contract.provider.getGasPrice();
 
     const transaction = await contract.approveTransfer(transferId, documentsURI, {
-        gasLimit: ethers.BigNumber.from(gasLimit).mul(ethers.BigNumber.from(10)),
+        gasLimit: ethers.BigNumber.from(gasLimit),
         gasPrice: gasPrice
     });
 
@@ -76,26 +76,37 @@ export const approveTransfer = async (transferId, documentsURI, tokenAddress) =>
 
 export const claimTokens = async (toAddress, amount, tokenAddress) => {
     const contract = await getContract(tokenAddress);
-    const amount_ = BigNumber.from(amount);
-    const resultAmount = amount_.mul(BigNumber.from("10").pow(18));
-    const transferId = await contract.getTransferId(toAddress, resultAmount);
-    const transferDet_ = await contract.getTransferDetails(transferId)
-
-    const transferDetails = await contract.shareTransfers(transferId);
+    console.log(BigNumber.from(amount).mul(BigNumber.from("10").pow(18)))
+    const transferId = await contract.getTransferId(toAddress, BigNumber.from(amount).mul(BigNumber.from("10").pow(18)));
+    console.log("Transfer Id", transferId.toString());
+    const transfer = await contract.shareTransfers(transferId.toString());
     const tokenPrice = await contract.tokenPrice();
+    const transferAmount = BigNumber.from(transfer.amount);
 
-    const adjustedAmount = BigNumber.from(transferDetails.amount)
-
+    const amount_ = BigNumber.from(transferAmount);
     const amount__ = amount_.div(BigNumber.from("10").pow(18));
-    const requiredValue = BigNumber.from(amount__).mul(BigNumber.from(tokenPrice));
+    const payableAmount = amount__ * (BigNumber.from(tokenPrice)) * BigNumber.from(2);
+
+    console.log(transfer)
 
     const gasLimit = await contract.estimateGas.buyAndTransferTokens(transferId);
-    const gasPrice = (await contract.provider.getFeeData()).gasPrice;
+    const gasPrice = await contract.provider.getGasPrice();
+
     const transaction = await contract.buyAndTransferTokens(transferId, {
-        value: requiredValue,
-        gasLimit: gasLimit.mul(20),
-        gasPrice: gasPrice
+      value: payableAmount,
+      gasLimit: gasLimit * BigNumber.from(20),
+    gasPrice: gasPrice
     });
 
     await transaction.wait();
 };
+
+export const getTokenForSale = async (tokenAddress) => {
+    const contract = await getContract(tokenAddress);
+    return await contract.totalAvailableToBuy();
+}
+
+export const getTransferId = async (to, amount, tokenAddress) => {
+    const contract = await getContract(tokenAddress);
+    return  await contract.getTransferId(to, BigNumber.from(amount).mul(BigNumber.from("10").pow(18)));
+}

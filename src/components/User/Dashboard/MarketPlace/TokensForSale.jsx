@@ -62,7 +62,7 @@ const TokensForSale = () => {
                     <Column field="tokenName" header="Name" />
                     <Column field="tokenSymbol" header="Token Symbol" />
                     <Column field="amount" header="Total for Sale" />
-                    <Column field="owner.businessName" header="Current Holder"/>
+                    <Column field="owner.businessName" header="Seller"/>
                     <Column field="tokenPrice" header="Price" body={renderPrice} />
                 </DataTable>
             </div>

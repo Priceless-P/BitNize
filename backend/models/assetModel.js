@@ -34,6 +34,8 @@ const AssetSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  transactionHash: {
+    type: String},
   tokenPrice: {
     type: Number,
     default: 0,

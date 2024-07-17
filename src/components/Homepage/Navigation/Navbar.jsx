@@ -19,12 +19,20 @@ const Navbar = () => {
                 document.getElementById("how-it-works-section").scrollIntoView({ behavior: 'smooth' });
             },
         },
-
     ];
 
+    const start = (
+        <img
+            alt="logo"
+            src="/images/logo-white.png"
+            style={{ height: '40px', cursor: 'pointer', width:'100px' }}
+            onClick={() => navigate('/')}
+        />
+    );
+
     return (
-        <div className="card navbar-container surface-0 " style={{ background: 'transparent', border: 'none' }}>
-            <Menubar model={items} className="surface-0 "/>
+        <div className="card navbar-container surface-0" style={{ background: 'transparent', border: 'none' }}>
+            <Menubar model={items} start={start} className="surface-0" />
         </div>
     );
 };

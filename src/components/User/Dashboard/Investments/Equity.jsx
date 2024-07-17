@@ -10,16 +10,19 @@ import { fetchTokenDetails } from "../../../../functions/api";
 import { createBuyTransaction } from "../../../../functions/api";
 import { Toast } from "primereact/toast";
 import Layout from "../Layout/Layout";
+import { Dialog } from "primereact/dialog";
 import { WalletContext } from "../WalletContext";
-import { buyTokens as buyTokensFromContract } from "../../../../functions/contracts"; // Import the function
+import { buyTokens as buyTokensFromContract, getTokenForSale } from "../../../../functions/contracts"; // Import the function
 import { useNavigate } from "react-router-dom";
 
 const Equity = () => {
   const { tokenId } = useParams();
   const [amount, setAmount] = useState(0);
+  const [amountForSale, setAmountForSale] = useState(null)
   const [loading, setLoading] = useState(false);
   const [tokenDetails, setTokenDetails] = useState(null);
   const { walletInfo } = useContext(WalletContext);
+
   const toast = useRef(null);
   const navigate = useNavigate();
 
@@ -34,7 +37,7 @@ const Equity = () => {
         // Fetch user information from session storage
         const userString = sessionStorage.getItem("user");
         const userObject = JSON.parse(userString);
-
+          setAmountForSale(await getTokenForSale(details.result.assetContractAddress));
         if (details.result.owner.businessName !== userObject.businessName) {
           setTokenDetails(details);
         } else {
@@ -69,11 +72,17 @@ const Equity = () => {
       amount,
       price: tokenDetails.result.tokenPrice,
       transactionHash,
-      isForSale: false,
+      isForSale: true,
     };
 
     try {
       const response = await createBuyTransaction(transactionData);
+      toast.current.show({
+        severity: "success",
+        summary: "Success",
+        detail: "Tokens purchased successfully",
+      });
+      navigate("/dashboard");
 
       if (response.success) {
         console.log("saved");
@@ -99,12 +108,12 @@ const Equity = () => {
         tokenDetails.result.owner.wallets[0]
       );
 
-      await storeTransactionDetails(tx.hash);
+      const hash = await storeTransactionDetails(tx.hash);
 
       toast.current.show({
         severity: "success",
-        summary: "Success",
-        detail: "Tokens purchased successfully",
+        summary: "Tokens purchased successfully",
+        detail: "Transaction Hash", hash,
       });
       navigate("/dashboard");
     } catch (error) {
@@ -141,6 +150,21 @@ const Equity = () => {
     };
     return (
       <div className="p-grid">
+       <Toast ref={toast} />
+              <Dialog
+          header="Buying Token"
+          visible={loading}
+          modal={true}
+          onHide={() => {}}
+          closable={false}
+        >
+          <div className="p-d-flex p-jc-center p-ai-center">
+            <i
+              className="pi pi-spin pi-spinner"
+              style={{ fontSize: "2rem" }}
+            ></i>
+          </div>
+        </Dialog>
         <div className="p-col-12 p-md-4">
           <Card>
             <img
@@ -168,7 +192,7 @@ const Equity = () => {
             </p>
             <p>
               <strong>Total Available:</strong>{" "}
-              {(totalAvailableForPurchase / 100) * 1000}
+              {(amountForSale / 1000000000000000000)}
             </p>
             <div className="p-col-12 p-md-6">
               <strong>Contract Address:</strong> {assetContractAddress}
@@ -227,7 +251,7 @@ const Equity = () => {
           />
         </div>
       </Card>
-      <Toast ref={toast} />
+
     </Layout>
   );
 };

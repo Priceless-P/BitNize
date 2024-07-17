@@ -6,6 +6,7 @@ import { InputNumber } from "primereact/inputnumber";
 import { Toast } from "primereact/toast";
 import { Divider } from "primereact/divider";
 import { Fieldset } from "primereact/fieldset";
+import { Dialog } from "primereact/dialog";
 import Layout from "../Layout/Layout";
 
 import { WalletContext } from "../WalletContext";
@@ -18,6 +19,7 @@ const TokenDetails = () => {
   const [token, setToken] = useState(null);
   const [amount, setAmount] = useState(0);
   const toast = useRef(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getTokenDetails = async () => {
@@ -43,6 +45,7 @@ const TokenDetails = () => {
 
   const handleRequestTransfer = async () => {
     try {
+        setLoading(true);
       const { buyer, asset } = token;
       const from = buyer.wallets[0];
       const to = walletInfo.account;
@@ -69,7 +72,9 @@ const TokenDetails = () => {
         summary: "Error",
         detail: "Error requesting transfer",
       });
-    }
+    } finally {
+        setLoading(false);
+      }
   };
 
   if (!token) {
@@ -79,6 +84,20 @@ const TokenDetails = () => {
   return (
     <Layout>
       <div className="p-grid p-dir-col">
+      <Dialog
+          header="Sending Request "
+          visible={loading}
+          modal={true}
+          onHide={() => {}}
+          closable={false}
+        >
+          <div className="p-d-flex p-jc-center p-ai-center">
+            <i
+              className="pi pi-spin pi-spinner"
+              style={{ fontSize: "2rem" }}
+            ></i>
+          </div>
+        </Dialog>
         <Toast ref={toast} />
 
         <Panel header={`Details`} className="p-mb-4">
@@ -97,7 +116,7 @@ const TokenDetails = () => {
                 <strong>Description:</strong> {token.asset.assetDescription}
               </div>
               <div className="p-col-12 p-md-6">
-                <strong>Price:</strong> {token.asset.tokenPrice}
+                <strong>Price:</strong> ${token.asset.tokenPrice}
               </div>
 
               <div className="p-col-12 p-md-6">
