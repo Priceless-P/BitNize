@@ -7,8 +7,8 @@ import { Toast } from "primereact/toast";
 import { Divider } from "primereact/divider";
 import { Fieldset } from "primereact/fieldset";
 import Layout from "../Layout/Layout";
-import { WalletContext } from "../WalletContext";
 
+import { WalletContext } from "../WalletContext";
 import { fetchBuyTransaction, saveTransferRequest } from "../../../../functions/api";
 import { requestTransfer } from "../../../../functions/contracts";
 
@@ -37,6 +37,9 @@ const TokenDetails = () => {
 
   }, [tokenId]);
 
+  const handleOpenDocument = () => {
+    window.open(`http://localhost:5000/${token.asset.tokenDocument}`, '_blank');
+  };
 
   const handleRequestTransfer = async () => {
     try {
@@ -45,9 +48,8 @@ const TokenDetails = () => {
       const to = walletInfo.account;
       const userString = sessionStorage.getItem("user");
           const userObject = JSON.parse(userString);
-          console.log(token)
 
-      await requestTransfer(from, to, amount, asset.assetContractAddress);
+      const tex = await requestTransfer(from, to, amount, asset.assetContractAddress);
       await saveTransferRequest({
         from: buyer._id,
           to: userObject._id,
@@ -71,7 +73,7 @@ const TokenDetails = () => {
   };
 
   if (!token) {
-    return <div>Loading...</div>;
+    return <Layout>Loading...</Layout>;
   }
 
   return (
@@ -97,15 +99,16 @@ const TokenDetails = () => {
               <div className="p-col-12 p-md-6">
                 <strong>Price:</strong> {token.asset.tokenPrice}
               </div>
-              <div className="p-col-12 p-md-6">
-                <strong>Amount:</strong> {token.amount}
-              </div>
 
               <div className="p-col-12 p-md-6">
                 <strong>Contract Address:</strong> {token.asset.assetContractAddress}
               </div>
               <div className="p-col-12 p-md-6">
-                <strong>Document:</strong> {token.asset.tokenDocument}
+                <strong>White Paper:</strong> <Button
+        icon="pi pi-external-link"
+        className="p-button-text"
+        onClick={handleOpenDocument}
+      />
               </div>
               {/* <div className="p-col-12 p-md-6">
                 <strong>For Sale:</strong> {token.isForSale ? "Yes" : "No"}
@@ -113,8 +116,8 @@ const TokenDetails = () => {
             </div>
           </Fieldset>
         </Panel>
-
-        <Panel header="Owner Details" className="p-mb-4">
+    <Divider ></Divider>
+        <Panel header="Current Owner Details" className="p-mb-4">
           <Fieldset legend="Current Owner Information" toggleable>
             <div className="p-grid">
               <div className="p-col-12 p-md-6">
@@ -124,6 +127,9 @@ const TokenDetails = () => {
                 <strong>Email:</strong> {token.buyer.email}
               </div>
               <div className="p-col-12 p-md-6">
+                <strong>Amount for sale:</strong> {token.amount}
+              </div>
+              {/* <div className="p-col-12 p-md-6">
                 <strong>Company:</strong>{" "}
                 {token.buyer.isCompany ? token.buyer.businessName : "N/A"}
               </div>
@@ -132,7 +138,7 @@ const TokenDetails = () => {
               </div>
               <div className="p-col-12 p-md-6">
                 <strong>Year Started:</strong> {token.buyer.yearStarted}
-              </div>
+              </div> */}
             </div>
           </Fieldset>
         </Panel>

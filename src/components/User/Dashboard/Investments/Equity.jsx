@@ -21,7 +21,7 @@ const Equity = () => {
   const [tokenDetails, setTokenDetails] = useState(null);
   const { walletInfo } = useContext(WalletContext);
   const toast = useRef(null);
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
@@ -34,7 +34,6 @@ const Equity = () => {
         // Fetch user information from session storage
         const userString = sessionStorage.getItem("user");
         const userObject = JSON.parse(userString);
-
 
         if (details.result.owner.businessName !== userObject.businessName) {
           setTokenDetails(details);
@@ -74,13 +73,11 @@ const Equity = () => {
     };
 
     try {
-        const response = await createBuyTransaction(transactionData);
+      const response = await createBuyTransaction(transactionData);
 
       if (response.success) {
-          console.log("saved");
+        console.log("saved");
       }
-
-
     } catch (error) {
       console.error("Error storing transaction details:", error);
       toast.current.show({
@@ -96,7 +93,11 @@ const Equity = () => {
 
     setLoading(true);
     try {
-      const tx = await buyTokensFromContract(tokenDetails.result.assetContractAddress, amount, tokenDetails.result.owner.wallets[0]);
+      const tx = await buyTokensFromContract(
+        tokenDetails.result.assetContractAddress,
+        amount,
+        tokenDetails.result.owner.wallets[0]
+      );
 
       await storeTransactionDetails(tx.hash);
 
@@ -105,7 +106,7 @@ const Equity = () => {
         summary: "Success",
         detail: "Tokens purchased successfully",
       });
-      navigate('/dashboard')
+      navigate("/dashboard");
     } catch (error) {
       console.log(error);
       toast.current.show({
@@ -128,8 +129,16 @@ const Equity = () => {
       assetIcon,
       owner,
       tokenPrice,
+      assetContractAddress,
       totalAvailableForPurchase,
+      tokenDocument,
     } = tokenDetails.result;
+    const handleOpenDocument = () => {
+      window.open(`http://localhost:5000/${tokenDocument}`, "_blank");
+    };
+    const handleOpenLegalDocument = () => {
+      window.open(`http://localhost:5000/${owner.legalDocumentsURI}`, "_blank");
+    };
     return (
       <div className="p-grid">
         <div className="p-col-12 p-md-4">
@@ -161,8 +170,19 @@ const Equity = () => {
               <strong>Total Available:</strong>{" "}
               {(totalAvailableForPurchase / 100) * 1000}
             </p>
+            <div className="p-col-12 p-md-6">
+              <strong>Contract Address:</strong> {assetContractAddress}
+            </div>
+            <div className="p-col-12 p-md-6">
+              <strong>Token Document:</strong>{" "}
+              <Button
+                icon="pi pi-external-link"
+                className="p-button-text"
+                onClick={handleOpenDocument}
+              />
+            </div>
           </Panel>
-          <Fieldset legend="Owner Details">
+          <Fieldset legend="Company Details">
             <p>
               <strong>Business Name:</strong> {owner.businessName}
             </p>
@@ -171,6 +191,14 @@ const Equity = () => {
             </p>
             <p>
               <strong>Year Started:</strong> {owner.yearStarted}
+            </p>
+            <p>
+              <strong>Business WhitePaper:</strong>
+              <Button
+                icon="pi pi-external-link"
+                className="p-button-text"
+                onClick={handleOpenLegalDocument}
+              />
             </p>
           </Fieldset>
         </div>

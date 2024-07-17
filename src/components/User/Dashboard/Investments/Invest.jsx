@@ -62,7 +62,7 @@ const Invest = () => {
   return (
     <Layout>
       <div>
-        <h1>Open Equity Investment</h1>
+        <h1>Open Equity Investment (Buy Directly from Companies)</h1>
         <DataTable
           value={tokens}
           selectionMode="single"

@@ -2,11 +2,14 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Menubar } from 'primereact/menubar';
 import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
 import { WalletContext } from './WalletContext';
+import { useNavigate } from 'react-router-dom';
+import { Button } from 'primereact/button';
 import NotificationBell from './NotificationBell';
 import { addWallet } from '../../../functions/api';
 import './TopBar.css';
 
 const TopBar = () => {
+    const navigate = useNavigate();
     const { walletInfo, setWalletInfo } = useContext(WalletContext);
     const address = useAddress();
     const [userName, setUserName] = useState("");
@@ -55,9 +58,18 @@ const TopBar = () => {
         );
     };
 
+    const handleLogout = () => {
+        navigate('/logout');
+    };
     const welcomeMessage = () => {
         return (
-            userName && <div className="welcome-message mr-5">Hi, {userName}!</div>
+            userName && <div className="welcome-message mr-5">Hi, {userName}!
+            <Button
+                label="Logout"
+                className="ml-5 p-button-link"
+                onClick={handleLogout}
+            />
+            </div>
         );
     };
 
@@ -72,6 +84,7 @@ const TopBar = () => {
     ];
 
     const start = (
+    <a href="/">
         <img
             alt="logo"
             src="/images/logo-white.png"
@@ -79,6 +92,7 @@ const TopBar = () => {
             width="150"
             className="logo"
         />
+        </a>
     );
 
     return (

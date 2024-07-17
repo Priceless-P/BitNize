@@ -28,7 +28,8 @@ const PendingSettle = () => {
 
   const handleClaimTokens = async (settle) => {
     try {
-    console.log(settle)
+        //console.log(pendingSettles);
+    //console.log(settle)
       await claimTokens(settle.to.wallets[0], settle.amount, settle.asset.assetContractAddress);
 
     } catch (error) {

@@ -59,7 +59,7 @@ const CreateToken = () => {
       const documentURISave = await saveFile({ file: formData.documentsURI });
       const documentURI = documentURISave.result;
       const priceInWei = await convertPriceToWei(formData.tokenPrice);
-      console.log(priceInWei);
+      //console.log(priceInWei);
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();

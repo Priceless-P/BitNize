@@ -37,7 +37,7 @@ const BuyTokens = () => {
     };
 
     getTokenDetails();
-    console.log(tokenDetails);
+    //console.log(tokenDetails);
   }, [tokenId]);
 
   const storeTransactionDetails = async (transactionHash) => {
@@ -99,7 +99,7 @@ const BuyTokens = () => {
       );
 
       const tokenPrice = await contract.tokenPrice();
-      console.log(tokenPrice);
+      //console.log(tokenPrice);
       const decimals = await contract.decimals();
       const adjustedAmount = BigNumber.from(amount).mul(
         BigNumber.from(10).pow(decimals)

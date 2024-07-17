@@ -1,0 +1,23 @@
+.footer-container {
+    background-color: #f4f4f4;
+    padding: 2rem 0;
+    color: #555;
+}
+
+.footer-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+    text-decoration: none;
+}

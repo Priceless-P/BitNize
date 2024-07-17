@@ -1,14 +1,23 @@
 // frontend/src/components/LoginForm.js
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { loginUser } from '../../../functions/api';
 import { toast } from 'react-toastify';
+import Navbar from '../../Homepage/Navigation/Navbar';
 
 const Login = () => {
     const navigate = useNavigate();
+    useEffect(() => {
+        const user = sessionStorage.getItem('user');
+        const token = document.cookie.split('; ').find(row => row.startsWith('Bit-Token='));
+
+        if (user && token) {
+          navigate('/dashboard');
+        }
+      }, [navigate]);
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -39,6 +48,8 @@ const Login = () => {
   };
 
   return (
+  <>
+  <Navbar />
     <div className="flex align-items-center justify-content-center">
       <div className="surface-card p-4 shadow-2 border-round w-full lg:w-6">
         <div className="text-center mb-5">
@@ -59,6 +70,7 @@ const Login = () => {
         </form>
       </div>
     </div>
+     </>
   );
 };
 

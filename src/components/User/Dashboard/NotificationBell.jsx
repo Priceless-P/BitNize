@@ -18,7 +18,7 @@ const NotificationBell = ({ count, setNotificationCount }) => {
                     fetchPendingTransfers(userId),
                     fetchPendingSettle(userId),
                 ]);
-                console.log(pendingSettles)
+                //console.log(pendingSettles)
 
                 if (pendingTransfers.success && pendingSettles.success) {
                     setNotificationCount(pendingTransfers.result.length + pendingSettles.result.length);

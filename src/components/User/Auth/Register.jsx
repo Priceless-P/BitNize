@@ -1,5 +1,3 @@
-// frontend/src/components/RegisterForm.js
-
 import React, { useState } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
@@ -10,7 +8,7 @@ import { FileUpload } from 'primereact/fileupload';
 import { Tooltip } from 'primereact/tooltip';
 import { convertToBase64 } from '../../../functions/utils';
 import { useNavigate } from 'react-router-dom';
-
+import Navbar from '../../Homepage/Navigation/Navbar'
 const Register = () => {
     const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -61,6 +59,8 @@ const Register = () => {
   };
 
   return (
+  <>
+<Navbar />
     <div className="flex align-items-center justify-content-center">
       <div className="surface-card p-4 shadow-2 border-round w-full lg:w-6">
         <div className="text-center mb-5">
@@ -121,6 +121,7 @@ const Register = () => {
         </form>
       </div>
     </div>
+    </>
   );
 };
 

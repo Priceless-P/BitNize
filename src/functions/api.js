@@ -217,7 +217,7 @@ export const fetchPendingSettle = async (userId) => {
         credentials: 'include',
 
       });
-      console.log("Here")
+
     return await response.json();
 };
 

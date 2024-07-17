@@ -1,10 +1,9 @@
 import React from "react";
-import { Button } from "primereact/button";
 
 const Features = () => {
     return (
-        <div className="text-center">
-            <div className="mb-3 font-bold text-3xl">
+        <div className="text-center" id="features-section">
+            <div className="mb-3 font-bold text-3xl mt-5 mb-4">
                 <span className="text-900">Tokenize Your Assets, </span>
                 <span className="text-blue-600">Empower Your Business</span>
             </div>
