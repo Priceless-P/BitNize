@@ -10,9 +10,11 @@ let redisClient;
 (async () => {
   try {
     redisClient = createClient({
-        host: process.env.REDIS_HOST,
-        port: process.env.REDIS_PORT,
-        // password: process.env.REDIS_PASSWORD
+        password: process.env.REDIS_PASSWORD,
+        socket: {
+            host: 'redis-18072.c239.us-east-1-2.ec2.redns.redis-cloud.com',
+            port: 18072
+        }
     });
     redisClient.on('error', (err) => {
       console.error('Redis error:', err);
