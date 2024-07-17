@@ -1,5 +1,7 @@
-const { createClient } = require("redis");
+const { createClient } = require('redis');
+const dotenv = require("dotenv");
 
+dotenv.config()
 /**
  * Connects to Redis Instance
  */
@@ -8,16 +10,17 @@ let redisClient;
 (async () => {
   try {
     redisClient = createClient({
-      host: "redis-18072.c239.us-east-1-2.ec2.redns.redis-cloud.com",
-      port: 18072,
+        host: process.env.REDIS_HOST,
+        port: process.env.REDIS_PORT,
+        // password: process.env.REDIS_PASSWORD
     });
-    redisClient.on("error", (err) => {
-      console.error("Redis error:", err);
+    redisClient.on('error', (err) => {
+      console.error('Redis error:', err);
     });
     await redisClient.connect();
-    console.log("Connected to Redis");
+    console.log('Connected to Redis');
   } catch (error) {
-    console.log("Redis connection error:", error);
+    console.log('Redis connection error:', error);
   }
 })();
 
