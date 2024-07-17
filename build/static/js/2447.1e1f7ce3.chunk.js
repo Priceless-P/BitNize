@@ -1,0 +1,1 @@
+(self.webpackChunkmy_rsk_wallet_app=self.webpackChunkmy_rsk_wallet_app||[]).push([[2447],{3285:()=>{},15340:()=>{},79838:()=>{}}]);
